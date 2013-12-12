@@ -1,10 +1,12 @@
 import csv
 import math
-import os.path
+import globals
 
 ############ GLOBAL VARIABLES ############
 
-divisionDataFileName = 'usaData/usaDivisions2000'
+path = globals.projectDirectory
+divisionDataFileName = path + 'usData/usDivisionsCommuters.csv'
+
 divisions = {}
 
 ################ FUNCTIONS ###############
@@ -98,7 +100,7 @@ def outputAbsorptionProbs():
 # to all other divisions and writes them to files
 def outputFlux():
 	for source in divisions:
-		outputFileName = 'flux/flux' + source + '.csv'
+		outputFileName = path + '/flux/flux' + source + '.csv'
 		if (os.path.isfile(outputFileName)):
 			continue
 		outputFile = open(outputFileName, 'w')

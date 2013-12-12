@@ -1,0 +1,99 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+
+public class Division 
+{	
+	public static HashMap<String,Division> divisions;
+	
+	public String name;
+	public String uid;
+	public String region;
+	public int population;
+	public int commuters;
+	public double latitude;
+	public double longitude;
+	
+	public Division(String[] data)
+	{
+		this.uid = data[0];
+		this.region = data[1];
+		this.name = data[2];
+		this.population = Integer.parseInt(data[3]);
+		this.commuters = Integer.parseInt(data[4]);
+		this.latitude = Double.parseDouble(data[5]);
+		this.longitude = Double.parseDouble(data[6]);
+	}
+	
+	public static void loadDivisions(String fileName) throws IOException
+	{
+		divisions = new HashMap<String,Division>();
+		
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		String line;
+		String[] data;
+		
+		while ((line = br.readLine()) != null) 
+		{
+			data = line.split(",");
+			divisions.put(data[0], new Division(data));
+		}
+		
+		br.close();
+	}
+	
+	public static boolean equal(Division x, Division y)
+	{
+		return x.uid.equals(y.uid);
+	}
+	
+	public static double distance(Division x, Division y)
+	{
+		double earthRadius = 6373;
+		double d2r = Math.PI / 180;
+
+		double deltaLon = (y.longitude - x.longitude) * d2r;
+		double deltaLat = (y.latitude - x.latitude) * d2r;
+		double sinDeltaLon = Math.sin(deltaLon / 2.0);
+		double sinDeltaLat = Math.sin(deltaLat / 2.0);
+		double a =
+				Math.pow(sinDeltaLat, 2) + Math.pow(sinDeltaLon, 2)
+				* Math.cos(x.latitude * d2r)
+				* Math.cos(y.latitude * d2r);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		return earthRadius * c;
+	}
+	
+	public static int radiusPopulation(Division i, Division j)
+	{
+		double radius = distance(i, j);
+		int population = 0;
+		for (Division division : divisions.values())
+		{
+			if (equal(division, i) || equal(division, j))
+				continue;
+			if (distance(i, division) > radius)
+				continue;
+			population += division.population;
+		}
+		return population;
+	}
+	
+	public static double absorptionProbability(Division i, Division j)
+	{
+		if (equal(i, j))
+			return 0;
+		
+		double mi = i.population;
+		double nj = j.population;
+		double sij = radiusPopulation(i, j);
+		
+		return (mi*nj) / ((mi+sij)*(mi+nj+sij));
+	}
+	
+	public static int flux(Division i, Division j)
+	{
+		return (int) Math.round(i.commuters * absorptionProbability(i, j));
+	}
+}

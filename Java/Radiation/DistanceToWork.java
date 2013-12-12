@@ -7,9 +7,10 @@ import java.util.HashMap;
 
 public class DistanceToWork 
 {
-	static String movementFileName = "movementDataDownsampled.csv";
-	static String divisionFileName = "usaDivisions2000.csv";
-	static String outputFileName = "distanceToWork.csv";
+	static String path = Globals.projectDirectory + "usData/";
+	static String movementFileName = path + "usMovementDataDownsampled.csv";
+	static String divisionFileName = path + "usDivisionsCommuters.csv";
+	static String outputFileName = path + "distanceToWork.csv";
 
 	static int binSize = 10;
 	static int maxDistance = 10000;
@@ -44,7 +45,7 @@ public class DistanceToWork
 		
 		int[] x = new int[maxDistance / binSize];
 		for (int i = 1; i < x.length + 1; i++)
-			x[i] = i * binSize;
+			x[i-1] = i * binSize;
 		int[] y = new int[maxDistance / binSize];
 		
 		for (Division divisionA : Division.divisions.values())
@@ -62,9 +63,10 @@ public class DistanceToWork
 			}
 		}
 		
-		for (int i = 0; i < x.length; i++)
+		output.append(x[0] + "," + y[0]);
+		for (int i = 1; i < x.length; i++)
 		{
-			output.append(x[i] + "," + y[i] + "\n");
+			output.append("\n" + x[i] + "," + y[i]);
 		}
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName));

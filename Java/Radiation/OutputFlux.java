@@ -6,7 +6,10 @@ public class OutputFlux
 {
 	public static void main(String args[]) throws IOException 
 	{
-		Division.loadDivisions("usaCanDivisions2000WithCommutersToCanada");
+		String divisionsFileName = Globals.projectDirectory + 
+				"usData/usDivisionsCommuters.csv";
+		
+		Division.loadDivisions(divisionsFileName);
 
 		ArrayList<String> keys = new ArrayList<String>();
 		keys.addAll(Division.divisions.keySet());

@@ -15,15 +15,15 @@ public class Division
 	public double latitude;
 	public double longitude;
 	
-	public Division(String[] data)
+	public Division(HashMap<String,Integer> keys, String[] data)
 	{
-		this.uid = data[0];
-		this.region = data[1];
-		this.name = data[2];
-		this.population = Integer.parseInt(data[3]);
-		this.commuters = Integer.parseInt(data[4]);
-		this.latitude = Double.parseDouble(data[5]);
-		this.longitude = Double.parseDouble(data[6]);
+		this.uid = data[keys.get("uid")];
+		this.region = data[keys.get("region")];
+		this.name = data[keys.get("name")];
+		this.population = Integer.parseInt(data[keys.get("population")]);
+		this.commuters = Integer.parseInt(data[keys.get("commuters")]);
+		this.latitude = Double.parseDouble(data[keys.get("latitude")]);
+		this.longitude = Double.parseDouble(data[keys.get("longitude")]);
 	}
 	
 	public static void loadDivisions(String fileName) throws IOException
@@ -31,13 +31,18 @@ public class Division
 		divisions = new HashMap<String,Division>();
 		
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
-		String line;
-		String[] data;
+		
+		String line = br.readLine();
+		String[] data = line.split(",");
+		
+		HashMap<String,Integer> keys = new HashMap<String,Integer>();
+		for (int i = 0; i < data.length; i++)
+			keys.put(data[i], i);
 		
 		while ((line = br.readLine()) != null) 
 		{
 			data = line.split(",");
-			divisions.put(data[0], new Division(data));
+			divisions.put(data[0], new Division(keys, data));
 		}
 		
 		br.close();

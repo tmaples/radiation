@@ -9,8 +9,9 @@ public class Downsample
 {	
 	public static void main(String[] args) throws IOException
 	{
-		String inputFileName = "movementDataProcessed.csv";
-		String outputFileName = "movementDataDownsampled.csv";
+		String path = Globals.projectDirectory + "usData/";
+		String inputFileName = path + "usMovementDataProcessed.csv";
+		String outputFileName = path + "usMovementDataDownsampled.csv";
 
 		HashMap<String, HashMap<String, Integer>> movement = new HashMap<String, HashMap<String, Integer>>();
 		BufferedReader br = new BufferedReader(new FileReader(inputFileName));

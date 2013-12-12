@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Movement Map</title>
+    <script type="text/javascript" src="d3/d3.v3.min.js"></script>
+    <style type="text/css">
+    #counties 
+    {
+        -moz-transition: all 1.5s;
+        -o-transition: all 1.5s;
+        -webkit-transition: all 1.5s;
+        transition: all 1.5s;
+    }
+    
+    #county-name {
+        position: absolute;
+        text-align: center;
+        font-family: sans-serif;
+        font-size: 14px;
+    }
+    
+    #county-name.hidden {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <p id="county-name"><strong></strong></p>
+
+    <script type="text/javascript">
+
+    var mapFileName = "us.json";
+    var movementFileName = "usMovementToCanada.csv"
+    var mapData;
+    var movementData;
+
+    var h = 700, w = 1400;
+    
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("height", h)
+    .attr("width", w);
+
+    var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(1500);
+
+    var path = d3.geo.path().projection(projection);
+
+    var scale = d3.scale.linear().domain([0, 1]).range([0, 1]);
+
+    d3.json(mapFileName, function(data) 
+    {
+        mapData = data;
+        loadMovementData();
+    });
+ 
+    d3.select("#county-name").style("width",w+"px");
+
+    function loadMovementData()
+    {
+        d3.csv(movementFileName, function(data) 
+        {
+            movementData = data;
+            mergeData();
+            makeMap();
+        });
+    }
+
+    function mergeData()
+    {
+        for (var i = 0; i < mapData.features.length; i++)
+        {
+            var mapUid = mapData.features[i].properties.uid;
+            for (var j = 0; j < movementData.length; j++) 
+            {
+                var movementUid = movementData[j].uid;
+                if (movementUid == mapUid) 
+                {
+                    var opacity = parseFloat(movementData[j].error);
+                    var color = "blue";
+                    if (movementData[j].error < 0)
+                    {
+                        opacity *= -1;
+                        color = "green";
+                    }
+                    var stroke = "lightgray";
+                    var strokeWidth = 0.2;
+                    if (movementData[j].border == "1")
+                    {
+                        stroke = "gold";
+                        strokeWidth = 1;
+                    }
+
+                    mapData.features[i].properties.data = movementData[j].data;
+                    mapData.features[i].properties.model = movementData[j].model;
+
+                    mapData.features[i].properties.color = color;
+                    mapData.features[i].properties.opacity = opacity;
+                    mapData.features[i].properties.stroke = stroke;
+                    mapData.features[i].properties.strokeWidth = strokeWidth;
+                    break;
+                }
+            }
+        }
+    }
+
+    function hover(d)
+    {
+        d3.select("#county-name")
+            .text(d.properties.name + " County, " + d.properties.region + " (data: " + d.properties.data + " / model: " + d.properties.model + ")")
+            .classed("hidden", false);
+    }
+
+    function unhover(d)
+    {
+        d3.select("#county-name")
+            .classed("hidden", true);
+    }
+
+    function makeMap()
+    {
+        svg.selectAll("path")
+        .data(mapData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("id", "counties")
+        .style("fill-opacity", function(d) {
+                return scale(d.properties.opacity); })
+        .attr("fill", function(d) {
+                return d.properties.color; })
+        .attr("stroke", function(d) {
+                return d.properties.stroke; })
+        .attr("stroke-width", function(d) {
+                return d.properties.strokeWidth; })
+        .on("mouseover", hover)
+        .on("mouseout", unhover);
+    }
+    </script>
+</body>
+</html>

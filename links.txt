@@ -1,0 +1,5 @@
+Can 2001 population: http://www12.statcan.ca/english/census01/products/standard/popdwell/Table-CSD-N.cfm?T=1&SR=1&S=20&O=A
+
+Can 2001 workflows: http://www12.statcan.gc.ca/english/census01/products/standard/themes/Rp-eng.cfm?LANG=E&APATH=3&DETAIL=1&DIM=0&FL=A&FREE=0&GC=0&GID=0&GK=0&GRP=1&PID=55532&PRID=0&PTYPE=55430,53293,55440,55496,71090&S=0&SHOWALL=0&SUB=0&Temporal=2001&THEME=49&VID=0&VNAMEE=&VNAMEF=
+
+Mex 2000 population: http://www.inegi.org.mx/sistemas/olap/proyectos/bd/consulta.asp?p=14048&c=10252&s=est#

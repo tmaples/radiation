@@ -7,19 +7,19 @@ class Flux implements Runnable
 {
 	Thread t;
 	String uid;
+	String fileName;
 
 	Flux(String uid) 
 	{
 		this.t = new Thread(this, uid);
 		this.uid = uid;
+		this.fileName = Globals.projectDirectory + "flux/flux" + uid + ".csv";
 		t.start();
 	}
 
 	public void run() 
 	{
-		String fileName = "flux/flux" + uid + ".csv";
 		File file = new File(fileName);
-
 		if(file.exists())
 			return;
 

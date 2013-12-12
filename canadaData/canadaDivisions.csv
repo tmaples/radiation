@@ -1,0 +1,289 @@
+uid,name,region,population,latitude,longitude,commuters
+2488,Abitibi,Quebec,24613,48.5706148,-77.9494546,140
+2487,Abitibi-Ouest,Quebec,21984,48.7626471,-79.0469034,90
+2448,Acton,Quebec,15167,45.5893025,-72.5239499,190
+5923,Alberni-Clayoquot Regional District,British Columbia,30345,48.8447352,-125.6317059,0
+1306,Albert County,New Brunswick,26749,45.7781844,-64.7774199,455
+3557,Algoma District,Ontario,118567,47.6459165,-84.7951524,60
+1205,Annapolis County,Nova Scotia,21773,44.8528802,-65.2648927,510
+1214,Antigonish County,Nova Scotia,19578,45.542031,-61.8948487,160
+2479,Antoine-Labelle,Quebec,33456,46.967219,-75.2639682,90
+2476,Argenteuil,Quebec,28931,45.711351,-74.3925274,305
+2439,Arthabaska,Quebec,64089,45.9394307,-72.0236274,200
+2440,Asbestos,Quebec,14535,45.7741034,-71.9367197,170
+2406,Avignon,Quebec,15268,48.1439834,-66.6875886,35
+6204,Baffin Region,Nunavut,14372,70.0000,-80.0000,0
+2429,Beauce-Sartigan,Quebec,47873,46.016459,-70.6135498,120
+2470,Beauharnois-Salaberry,Quebec,59137,45.2564956,-73.9089456,175
+2438,Becancour,Quebec,19088,46.3506215,-72.4350552,65
+2419,Bellechasse,Quebec,29570,46.7333,-70.7167,610
+2405,Bonaventure,Quebec,18267,48.0500,-65.4833,255
+3529,Brant County,Ontario,118485,43.1167,-80.3667,130
+2446,Brome-Missisquoi,Quebec,46165,45.1333,-72.8000,530
+3541,Bruce County,Ontario,63892,44.6174991,-81.3662622,1240
+5951,Bulkley-Nechako Regional District,British Columbia,40856,54.8746034,-125.536522,105
+1217,Cape Breton County,Nova Scotia,109330,46.1500,-60.1667,60
+5917,Capital Regional District,British Columbia,325754,48.434245,-123.9139452,110
+5941,Cariboo Regional District,British Columbia,65659,52.4031805,-123.4553619,85
+1311,Carleton County,New Brunswick,27184,46.3779509,-67.4899891,25
+5945,Central Coast Regional District,British Columbia,3781,51.9329295,-127.0940535,0
+5903,Central Kootenay Regional District,British Columbia,57019,49.8685203,-117.5237491,365
+5935,Central Okanagan Regional District,British Columbia,147739,49.9473663,-119.5588209,115
+2458,Champlain,Quebec,311838,46.4409094,-72.3450988,205
+2416,Charlevoix,Quebec,13166,47.4833,-70.4833,55
+2415,Charlevoix-Est,Quebec,16624,47.7333,-69.9833,135
+1302,Charlotte County,New Brunswick,27366,44.9268,-66.9771,0
+3536,Chatham-Kent Division,Ontario,107709,42.1177987,-82.0407137,410
+2444,Coaticook,Quebec,16595,45.1336856,-71.8039462,160
+3556,Cochrane District,Ontario,85247,50.4700387,-83.0158522,0
+1210,Colchester County,Nova Scotia,49307,45.4254775,-63.3275062,80
+5939,Columbia-Shuswap Regional District,British Columbia,48219,51.5199009,-118.0935141,0
+2481,Communaute-Urbaine-de-l'Outaouais,Quebec,226696,45.4765446,-75.7012723,36530
+2466,Communaute-Urbaine-de-Montreal,Quebec,1812723,45.4699445,-73.7852913,660
+2423,Communaute-Urbaine-de-Quebec,Quebec,509950,46.8032826,-71.242796,555
+5925,Comox-Strathcona Regional District,British Columbia,96131,49.6735133,-124.9282659,25
+5919,Cowichan Valley Regional District,British Columbia,71998,48.7569005,-124.0309983,300
+1211,Cumberland County,Nova Scotia,32605,45.7000,-64.1000,105
+2452,D'Autray,Quebec,38347,46.1720679,-73.2616025,975
+2424,Desjardins,Quebec,51855,46.75,-71.116667,125
+2472,Deux-Montagnes,Quebec,81417,45.5418051,-73.8932108,325
+1203,Digby County,Nova Scotia,19548,44.3000,-65.8000,60
+4801,Division No. 1,Alberta,67402,49.9377332,-110.9336125,160
+4601,Division No. 1,Manitoba,16432,49.7099236,-95.7962759,360
+1001,Division No. 1,Newfoundland and Labrador,242875,46.921452,-53.5646762,85
+4701,Division No. 1,Saskatchewan,30238,49.5098991,-102.4627226,80
+4810,Division No. 10,Alberta,83061,53.3648741,-111.4604638,1450
+4610,Division No. 10,Manitoba,9464,49.6936586,-97.5055406,90
+1010,Division No. 10,Newfoundland and Labrador,27864,47.55,-52.7,0
+4710,Division No. 10,Saskatchewan,19365,51.65,-103.53,235
+4811,Division No. 11,Alberta,975477,53.543997,-113.489856,585
+4611,Division No. 11,Manitoba,621451,49.85,-97.208333,45
+4711,Division No. 11,Saskatchewan,237629,51.7778129,-106.009897,175
+4812,Division No. 12,Alberta,58362,54.615319,-111.6097121,130
+4612,Division No. 12,Manitoba,19251,49.9166011,-96.543017,300
+4712,Division No. 12,Saskatchewan,23697,51.8888622,-107.6221723,1490
+4813,Division No. 13,Alberta,63954,54.3048819,-114.0944882,215
+4613,Division No. 13,Manitoba,42183,50.2307896,-96.821851,85
+4713,Division No. 13,Saskatchewan,24054,51.972331,-109.2704383,295
+4814,Division No. 14,Alberta,26871,53.5119663,-116.7743827,45
+4614,Division No. 14,Manitoba,17589,50.1932571,-97.4322673,20
+4714,Division No. 14,Saskatchewan,39476,53.034634,-102.9103338,50
+4815,Division No. 15,Alberta,34068,51.09,-115.35,170
+4615,Division No. 15,Manitoba,21914,50.395278,-100.368889,285
+4715,Division No. 15,Saskatchewan,80668,53.2,-105.75,275
+4816,Division No. 16,Alberta,42971,58.7016529,-111.9537953,25
+4616,Division No. 16,Manitoba,10341,51.0610857,-101.2064523,0
+4716,Division No. 16,Saskatchewan,37663,53.1935331,-107.1431596,75
+4817,Division No. 17,Alberta,57508,57.7582985,-116.6212527,660
+4617,Division No. 17,Manitoba,22899,51.0892086,-99.9744763,0
+4717,Division No. 17,Saskatchewan,39587,53.8081202,-108.9390153,2700
+4818,Division No. 18,Alberta,14346,54.7016191,-118.0739397,440
+4618,Division No. 18,Manitoba,22593,50.9233717,-97.7357319,60
+4718,Division No. 18,Saskatchewan,32029,56.6889485,-105.404472,0
+4819,Division No. 19,Alberta,86299,55.5133472,-118.6648009,80
+4619,Division No. 19,Manitoba,15805,51.833333,-98,0
+4802,Division No. 2,Alberta,133913,49.76,-112.26,170
+4602,Division No. 2,Manitoba,50869,49.433333,-96.85,3180
+1002,Division No. 2,Newfoundland and Labrador,24371,47.361667,-54.893056,25
+4702,Division No. 2,Saskatchewan,21635,49.67,-103.86,200
+4620,Division No. 20,Manitoba,11013,51.9948374,-101.2394272,0
+4621,Division No. 21,Manitoba,22556,53.9885518,-100.3474494,105
+4622,Division No. 22,Manitoba,35077,54.6257096,-96.2183508,0
+4623,Division No. 23,Manitoba,8989,57.4541661,-96.9211176,0
+4803,Division No. 3,Alberta,37580,49.3840055,-113.6692467,155
+4603,Division No. 3,Manitoba,42184,49.2717523,-97.6972846,330
+1003,Division No. 3,Newfoundland and Labrador,19370,47.8973529,-57.0040199,30
+4703,Division No. 3,Saskatchewan,14839,49.6961607,-106.259009,45
+4804,Division No. 4,Alberta,11300,51.1255094,-111.063257,20
+4604,Division No. 4,Manitoba,9942,49.1848962,-98.9011939,85
+1004,Division No. 4,Newfoundland and Labrador,22162,48.55,-58.574167,25
+4704,Division No. 4,Saskatchewan,11714,49.903611,-109.479722,45
+4805,Division No. 5,Alberta,47606,51.04,-113.4,2240
+4605,Division No. 5,Manitoba,13848,49.266667,-100.375,105
+1005,Division No. 5,Newfoundland and Labrador,40466,49.0943731,-57.2808406,25
+4705,Division No. 5,Saskatchewan,32492,50.5108774,-102.4594149,560
+4806,Division No. 6,Alberta,1021060,51.0463129,-114.0534407,190
+4606,Division No. 6,Manitoba,10110,49.7512441,-100.9085575,205
+1006,Division No. 6,Newfoundland and Labrador,36208,48.8049499,-56.3866692,95
+4706,Division No. 6,Saskatchewan,219250,50.6228913,-104.3851074,105
+4807,Division No. 7,Alberta,40407,52.6465354,-111.4482567,90
+4607,Division No. 7,Manitoba,57148,49.7567877,-99.9362934,225
+1007,Division No. 7,Newfoundland and Labrador,37335,48.9666662,-53.1726951,30
+4707,Division No. 7,Saskatchewan,46982,50.5060167,-106.4996903,505
+4808,Division No. 8,Alberta,153049,52.266667,-113.8,425
+4608,Division No. 8,Manitoba,14603,50.086111,-98.904167,205
+1008,Division No. 8,Newfoundland and Labrador,42188,48.42,-53.88,40
+4708,Division No. 8,Saskatchewan,30720,50.8429093,-108.7364265,185
+4809,Division No. 9,Alberta,19573,52.3241323,-115.5611493,0
+4609,Division No. 9,Manitoba,23322,49.9755629,-98.2055528,255
+1009,Division No. 9,Newfoundland and Labrador,20091,51.2487291,-55.358857,0
+4709,Division No. 9,Saskatchewan,36895,51.7160144,-102.3005389,90
+2449,Drummond,Quebec,87808,45.8614852,-72.5173998,215
+3522,Dufferin County,Ontario,51013,44.0527524,-80.1875065,530
+3518,Durham Regional Municipality,Ontario,506901,43.9368383,-78.9288242,345
+5901,East Kootenay Regional District,British Columbia,56291,50.1284105,-115.7568033,35
+3534,Elgin County,Ontario,81553,42.6645873,-80.9871074,6930
+3537,Essex County,Ontario,374975,42.1667,-82.7833,55
+6106,Fort Smith Region,Northwest Territories,28824,62.45,-114.4,0
+2437,Francheville,Quebec,138355,46.5000,-72.4167,515
+5909,Fraser Valley Regional District,British Columbia,237550,49.583333,-121.833333,385
+5953,Fraser-Fort George Regional District,British Columbia,95317,53.9290771,-121.6214717,0
+3510,Frontenac County,Ontario,138606,44.579703,-76.5653577,185
+1315,Gloucester County,New Brunswick,82929,47.9290075,-64.4316771,0
+3553,Greater Sudbury Division,Ontario,155268,46.5513927,-81.0354982,30
+5915,Greater Vancouver Regional District,British Columbia,1986965,49.2501243,-123.0824217,445
+3542,Grey County,Ontario,89073,44.4659957,-80.6326916,805
+1213,Guysborough County,Nova Scotia,9827,45.2873196,-61.8262436,115
+3528,Haldimand-Norfolk Regional Municipality,Ontario,104670,42.7967232,-80.4136271,225
+3546,Haliburton County,Ontario,15085,45.176198,-78.549065,0
+1209,Halifax County,Nova Scotia,359183,44.8544,-63.1992,30
+3524,Halton Regional Municipality,Ontario,375229,43.4667,-79.8667,185
+3525,Hamilton Division,Ontario,490268,43.2500,-79.8667,20
+1208,Hants County,Nova Scotia,40513,45.1,-63.9,1970
+3512,Hastings County,Ontario,125915,44.7072743,-77.6815168,350
+3540,Huron County,Ontario,59701,43.6416566,-81.6911559,100
+6107,Inuvik Region,Northwest Territories,8536,68.3607437,-133.7230177,0
+1215,Inverness County,Nova Scotia,19937,46.2761718,-61.0541688,280
+2461,Joliette,Quebec,54167,46.0232219,-73.439239,550
+2414,Kamouraska,Quebec,22494,47.566059,-69.865995,75
+3516,Kawartha Lakes Division,Ontario,69179,44.5337469,-78.9006484,35
+6205,Keewatin Region,Nunavut,7557,62.8067068,-92.3602529,0
+3560,Kenora District,Ontario,61802,54.0731818,-88.3266666,0
+1308,Kent County,New Brunswick,31383,46.4651616,-65.2841777,230
+1305,Kings County,New Brunswick,64208,45.6604,-65.7898,390
+1207,Kings County,Nova Scotia,58866,45.0000,-64.6000,770
+1101,Kings County,Prince Edward Island,19180,46.2500,-62.5000,765
+6208,Kitikmeot Region,Nunavut,4816,68.9167,-100.7500,0
+5949,Kitimat-Stikine Regional District,British Columbia,40876,56.5845216,-130.0464936,45
+5905,Kootenay Boundary Regional District,British Columbia,31843,49.231302,-118.6019627,55
+2431,L'Amiante,Quebec,43247,46.1222951,-71.2259251,255
+2460,L'Assomption,Quebec,103977,45.8166667,-73.4333333,320
+2432,L'Erable,Quebec,24021,46.1907518,-71.6337877,260
+2420,L'Ile-d'Orleans,Quebec,6779,46.9654876,-70.9062611,345
+2417,L'Islet,Quebec,19368,47.1030919,-70.350007,305
+2421,La Cote-de-Beaupre,Quebec,20984,47.4123275,-71.2740404,355
+2403,La Cote-de-Gaspe,Quebec,18545,48.9741791,-64.5193317,25
+2495,La Haute-Cote-Nord,Quebec,12894,49.3413579,-69.5231812,80
+2404,La Haute-Gaspesie,Quebec,12722,49.216667,-66.066667,25
+2447,La Haute-Yamaska,Quebec,79175,45.4,-72.733333,395
+2422,La Jacques-Cartier,Quebec,26459,47.033333,-71.583333,555
+2407,La Matapedia,Quebec,19920,48.3,-67.566667,95
+2409,La Mitis,Quebec,19326,48.6535716,-68.1375384,910
+2426,La Nouvelle-Beauce,Quebec,25850,46.4332145,-70.9554256,95
+2443,La Region-Sherbrookoise,Quebec,141212,45.3528411,-72.0168846,470
+2475,La Riviere-du-Nord,Quebec,90419,45.8133165,-74.0147676,395
+2483,La Vallee-de-la-Gatineau,Quebec,18730,46.8584413,-76.2818259,405
+2457,La Vallee-du-Richelieu,Quebec,119993,45.596337,-73.2000611,1045
+2493,Lac-Saint-Jean-Est,Quebec,51760,48.4740397,-71.7487833,780
+2459,Lajemmerais,Quebec,100263,45.6402054,-73.3628835,585
+3538,Lambton County,Ontario,126971,43.0527085,-82.0407137,350
+3509,Lanark County,Ontario,62495,45.0083777,-76.3589238,115
+2465,Laval,Quebec,343005,45.583333,-73.75,40
+2453,Le Bas-Richelieu,Quebec,50066,45.966667,-73,370
+2436,Le Centre-de-la-Mauricie,Quebec,64841,46.6,-72.816667,470
+2491,Le Domaine-du-Roy,Quebec,32839,48.6509865,-73.4157338,110
+2494,Le Fjord-du-Saguenay,Quebec,166780,48.717509,-70.7311947,70
+2430,Le Granit,Quebec,21830,45.5955313,-70.9074786,170
+2456,Le Haut-Richelieu,Quebec,100753,45.2260631,-73.1815104,595
+2441,Le Haut-Saint-Francois,Quebec,21394,45.5241118,-71.4052592,855
+2469,Le Haut-Saint-Laurent,Quebec,21851,45.057683,-74.1281342,560
+2490,Le Haut-Saint-Maurice,Quebec,15862,48.0478949,-73.7732917,0
+2402,Le Rocher-Perce,Quebec,19298,48.4806516,-63.8940966,225
+2442,Le Val-Saint-Francois,Quebec,28176,45.5257527,-72.1250321,660
+3507,Leeds and Grenville United Counties,Ontario,96606,44.6529659,-75.9327001,1940
+3511,Lennox and Addington County,Ontario,39461,44.6667,-77.1667,145
+2411,Les Basques,Quebec,9848,48.1,-69.066667,150
+2425,Les Chutes-de-la-Chaudiere,Quebec,78808,46.7,-71.283333,295
+2482,Les Collines-de-l'Outaouais,Quebec,35188,45.6761286,-75.8762498,6215
+2428,Les Etchemins,Quebec,17745,46.2985679,-70.4137389,895
+2401,Les Iles-de-la-Madeleine,Quebec,12824,47.3828692,-61.8656032,0
+2468,Les Jardins-de-Napierville,Quebec,22820,45.128676,-73.5596403,0
+2478,Les Laurentides,Quebec,38433,46.157259,-74.5177098,160
+2454,Les Maskoutains,Quebec,78917,45.608058,-72.8944642,620
+2464,Les Moulins,Quebec,110087,45.7557789,-73.6181046,235
+2477,Les Pays-d'en-Haut,Quebec,30866,45.9135909,-74.1719811,185
+2433,Lotbiniere,Quebec,26851,46.616594,-71.930745,45
+1206,Lunenburg County,Nova Scotia,47591,44.5441625,-64.4797871,1410
+1313,Madawaska County,New Brunswick,35611,47.4214,-68.3606,0
+2496,Manicouagan,Quebec,33620,49.216667,-68.15,25
+3551,Manitoulin District,Ontario,12679,45.7667,-82.2000,45
+2492,Maria-Chapdelaine,Quebec,26900,48.983333,-72.283333,85
+2451,Maskinonge,Quebec,23401,46.316667,-72.933333,55
+2408,Matane,Quebec,22507,48.8445157,-67.5305758,105
+2462,Matawinie,Quebec,43177,46.8005382,-74.0465474,550
+2435,Mekinac,Quebec,12809,47.0929111,-73.3187817,220
+2445,Memphremagog,Quebec,41871,45.2285619,-72.2066235,475
+3539,Middlesex County,Ontario,403185,42.9310419,-81.4278984,160
+2498,Minganie--Basse-Cote-Nord,Quebec,12321,49.8258507,-61.6341609,0
+2474,Mirabel,Quebec,27330,45.6637535,-74.0019645,20
+2463,Montcalm,Quebec,38740,45.9,-73.666667,470
+2418,Montmagny,Quebec,23438,46.9801031,-70.5565719,120
+5943,Mount Waddington Regional District,British Columbia,13111,50.7443191,-128.1734903,0
+3544,Muskoka District Municipality,Ontario,53106,45.1667,-79.3333,140
+5921,Nanaimo Regional District,British Columbia,127016,49.25,-124.333333,355
+3526,Niagara Regional Municipality,Ontario,410574,43.0500,-79.3000,590
+2450,Nicolet-Yamaska,Quebec,23496,46.1511344,-72.612084,360
+3548,Nipissing District,Ontario,82910,46.1348941,-78.9481361,500
+2499,Nord-du-Quebec,Quebec,38575,52.9399159,-73.5491361,0
+5937,North Okanagan Regional District,British Columbia,73227,50.3398977,-118.7840936,375
+5959,Northern Rockies Regional District,British Columbia,5720,58.8231929,-123.4127519,0
+1309,Northumberland County,New Brunswick,50817,46.9296444,-65.8859261,240
+3514,Northumberland County,Ontario,77497,43.9291805,-78.1108279,235
+5907,Okanagan-Similkameen Regional District,British Columbia,76635,49.5173467,-120.1281752,275
+3506,Ottawa Division,Ontario,774072,45.2484615,-75.8353706,25
+3532,Oxford County,Ontario,99270,43.184007,-80.7214417,3030
+2480,Papineau,Quebec,20367,45.883333,-75.05,510
+3549,Parry Sound District,Ontario,39665,45.7,-79.833333,50
+5955,Peace River Regional District,British Columbia,55080,56.4374388,-123.1681613,0
+3521,Peel Regional Municipality,Ontario,988948,43.6766398,-79.7848422,110
+3531,Perth County,Ontario,73675,43.518746,-81.0754657,485
+3515,Peterborough County,Ontario,125856,44.4598873,-78.172116,290
+1212,Pictou County,Nova Scotia,46965,45.5776091,-62.6510942,45
+2484,Pontiac,Quebec,14565,45.542346,-76.109052,515
+2434,Portneuf,Quebec,44955,46.6984528,-71.8910008,45
+5927,Powell River Regional District,British Columbia,19765,50.0654245,-124.5171511,0
+3502,Prescott and Russell United Counties,Ontario,76446,45.4610101,-75.1070652,14005
+1103,Prince County,Prince Edward Island,44495,46.8014526,-63.9233633,0
+3513,Prince Edward Division,Ontario,24901,44,-77.25,35
+1304,Queens County,New Brunswick,11862,45.8333,-66.0000,575
+1204,Queens County,Nova Scotia,11723,44.1631163,-64.9563453,40
+1102,Queens County,Prince Edward Island,71619,46.3649938,-63.1656341,290
+3559,Rainy River District,Ontario,22109,48.8499198,-92.6370411,0
+3547,Renfrew County,Ontario,95138,45.6383081,-77.1674026,160
+1314,Restigouche County,New Brunswick,36134,47.7680127,-66.6892807,140
+1216,Richmond County,Nova Scotia,10225,45.6935815,-60.6488211,70
+2410,Rimouski-Neigette,Quebec,52289,48.4071182,-68.5899567,65
+2412,Riviere-du-Loup,Quebec,31826,47.835957,-69.5359854,80
+2427,Robert-Cliche,Quebec,18771,46.2555934,-70.8482693,335
+2467,Roussillon,Quebec,138172,45.3700543,-73.6303305,455
+2455,Rouville,Quebec,29980,45.433333,-73.05,435
+2486,Rouyn-Noranda,Quebec,39621,48.233333,-79.016667,180
+1301,Saint John County,New Brunswick,76407,45.2796,-66.0628,165
+2497,Sept-Rivieres--Caniapiscau,Quebec,38931,52.3498864,-67.9418643,0
+1201,Shelburne County,Nova Scotia,16231,43.8202278,-65.3644679,65
+3543,Simcoe County,Ontario,377050,44.4716525,-79.8296743,305
+5947,Skeena-Queen Charlotte Regional District,British Columbia,21693,53.1053069,-132.2846569,25
+5931,Squamish-Lillooet Regional District,British Columbia,33011,50.5666362,-122.6978597,0
+5957,Stikine Region,British Columbia,1316,58.461588,-130.18060,0
+3501,Stormont Dundas and Glengarry United Counties,Ontario,109522,45.166667,-74.95,1140
+3552,Sudbury District,Ontario,22894,47.4718117,-81.8170577,1425
+1303,Sunbury County,New Brunswick,25776,45.9749516,-66.3543893,2685
+5929,Sunshine Coast Regional District,British Columbia,25599,49.7604377,-123.7643986,0
+2485,Temiscamingue,Quebec,17504,47.55,-79.233333,45
+2413,Temiscouata,Quebec,22420,47.6445035,-68.9357761,40
+2473,Therese-De Blainville,Quebec,130514,45.6485491,-73.8151147,290
+5933,Thompson-Nicola Regional District,British Columbia,119222,50.255031,-120.6968975,110
+3558,Thunder Bay District,Ontario,150860,49.3456625,-87.8656401,55
+3554,Timiskaming District,Ontario,34442,47.8308027,-80.3194903,65
+3520,Toronto Division,Ontario,2481494,43.6689775,-79.2902133,30
+2489,Vallee-de-l'Or,Quebec,42375,48.2538915,-76.573617,50
+2471,Vaudreuil-Soulanges,Quebec,102100,45.3834123,-74.2591416,40
+1312,Victoria County,New Brunswick,21172,46.9284511,-67.4027954,50
+1218,Victoria County,Nova Scotia,7962,46.6311899,-60.4208561,0
+3530,Waterloo Regional Municipality,Ontario,438515,43.4619,-80.5202,365
+3523,Wellington County,Ontario,187313,43.7500,-80.4000,545
+1307,Westmorland County,New Brunswick,124688,45.9599,-64.5155,180
+1202,Yarmouth County,Nova Scotia,26843,43.9000,-65.8000,95
+1310,York County,New Brunswick,87212,46.1999035,-67.0250252,165
+3519,York Regional Municipality,Ontario,729254,43.9884612,-79.4703885,605
+6001,Yukon,Yukon,28674,64.2823274,-135,0
