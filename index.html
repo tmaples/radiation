@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Movement Map</title>
+    <script type="text/javascript" src="d3/d3.v3.min.js"></script>
+    <style type="text/css">
+    #counties {
+        stroke: Black;
+        stroke-width: 0.2;
+        -moz-transition: all 1.5s;
+        -o-transition: all 1.5s;
+        -webkit-transition: all 1.5s;
+        transition: all 1.5s;
+    }
+
+    #counties.selected {
+        fill: #CDAD00;
+        fill-opacity: 1;
+    }
+
+    #counties.unselected {
+        fill: Blue;
+        fill-opacity: 0;
+    }
+    
+    #county-name {
+        position: absolute;
+        text-align: center;
+        font-family: sans-serif;
+        font-size: 14px;
+    }
+    
+    #county-name.hidden {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <p id="county-name"><strong></strong></p>
+
+    <script type="text/javascript">
+
+    var mapFileName = "CanUsa.json";
+    var mapData;
+
+    var selected;
+
+    var minValue = 0.5;
+
+    var h = 1500, w = 1200;
+    
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("height", h)
+    .attr("width", w);
+
+    var projection = d3.geo.azimuthalEqualArea()
+                        .rotate([70,-60, 25])
+                        .center([-20,-20])
+                        .scale(1000)
+                        .translate([w/2, h/2]);
+
+    var path = d3.geo.path().projection(projection);
+
+    var scale = d3.scale.log().domain([minValue, 10000]).range([0, 1]);
+
+    d3.json(mapFileName, function(data) 
+    {
+        mapData = data;
+        sortFeatures();
+        makeMap();
+    });
+ 
+    d3.select("#county-name").style("width",w+"px");
+
+    function loadMovementData(movementFileName)
+    {
+        d3.csv(movementFileName, function(data) 
+        {
+            mergeData(data);
+            updateMap();
+        });
+    }
+
+    function sortFeatures()
+    {
+        mapData.features.sort(function(a,b)
+        {
+            if(a.properties.uid < b.properties.uid) return -1;
+            if(a.properties.uid > b.properties.uid) return 1;
+            return 0;
+        })
+    }
+
+    function mergeData(movementData)
+    {
+        movementData.sort(function(a,b)
+        {
+            if(a.uid < b.uid) return -1;
+            if(a.uid > b.uid) return 1;
+            return 0;
+        })
+
+        var movementIndex = 0;
+        for (var i = 0; i < mapData.features.length; i++)
+        {
+            mapData.features[i].properties.value = minValue;
+            var mapUid = mapData.features[i].properties.uid;
+            for (var j = movementIndex; j < movementData.length; j++) 
+            {
+                var movementUid = movementData[j].uid;
+                var movementValue = parseFloat(movementData[j].movement);
+                if (movementUid == mapUid) 
+                {
+                    mapData.features[i].properties.value = movementValue;
+                    movementValue = j;
+                    break;
+                }
+            }
+        }
+    }
+
+    function clicked(d)
+    {
+        var fileName = "flux/flux" + d.properties.uid + ".csv";
+        if (fileName !== "flux/fluxnull.csv")
+        {
+            selected = d;
+            d3.selectAll("path")
+                .classed("selected", function(d) { return d == selected })
+                .classed("unselected", function(d) { return d != selected });
+        
+            loadMovementData(fileName);
+        }
+    }
+
+    function hover(d)
+    {
+        d3.select("#county-name")
+            .text(d.properties.name + ' County, ' + d.properties.region)
+            .classed("hidden", false);
+    }
+
+    function unhover(d)
+    {
+        d3.select("#county-name")
+            .classed("hidden", true);
+    }
+
+    function makeMap()
+    {
+        svg.selectAll("path")
+        .data(mapData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("id", "counties")
+        .classed("unselected", true)
+        .on("mouseover", hover)
+        .on("mouseout", unhover)
+        .on("click", clicked);
+    }
+
+    function updateMap()
+    {
+        svg.selectAll(".selected")
+            .style("fill-opacity", 1);
+        svg.selectAll(".unselected")
+            .style("fill-opacity", function(d) {
+                return scale(d.properties.value); });
+    }
+    </script>
+</body>
+</html>
