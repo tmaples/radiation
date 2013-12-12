@@ -6,9 +6,12 @@ import java.io.IOException;
 
 public class CountMovementToCanada 
 {
+	static String inputFileName = "movementDataProcessed.csv";
+	static String outputFileName = "movementToCanadaData.csv";
+
 	public static void main(String[] args) throws IOException
 	{
-		BufferedReader br = new BufferedReader(new FileReader("movementDataProcessed2000"));
+		BufferedReader br = new BufferedReader(new FileReader(inputFileName));
 		String line;
 		String[] data;
 		
@@ -23,7 +26,7 @@ public class CountMovementToCanada
 		
 		br.close();
 		
-		BufferedWriter writer = new BufferedWriter(new FileWriter("movementToCanada"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName));
 		writer.write(output.toString());
 		writer.close();
 	}

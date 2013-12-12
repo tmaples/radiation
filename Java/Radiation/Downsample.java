@@ -5,12 +5,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class Process 
+public class Downsample 
 {	
 	public static void main(String[] args) throws IOException
 	{
+		String inputFileName = "movementDataProcessed.csv";
+		String outputFileName = "movementDataDownsampled.csv";
+
 		HashMap<String, HashMap<String, Integer>> movement = new HashMap<String, HashMap<String, Integer>>();
-		BufferedReader br = new BufferedReader(new FileReader("movementDataProcessed2000"));
+		BufferedReader br = new BufferedReader(new FileReader(inputFileName));
 		String line;
 		while ((line = br.readLine()) != null) 
 		{
@@ -65,7 +68,7 @@ public class Process
 			}
 		}
 		
-		BufferedWriter writer = new BufferedWriter(new FileWriter("movementDataDownsampled3"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName));
 		writer.write(output.toString());
 		writer.close();
 	}
