@@ -1,0 +1,14 @@
+Canada Divisions
+median: 38504
+mean:   104191
+sdev:   250765
+
+Canada Sub-Divisions
+median: 655
+mean:   5359
+sdev:   45905
+
+USA counties
+median: 24555
+mean:   89352
+sdev:   292303
