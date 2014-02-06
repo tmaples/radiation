@@ -41,25 +41,27 @@
 
     <script type="text/javascript">
 
-    var mapFileName = "json/canadaUs.json";
+    var mapFileName = "json/us.json";
     var mapData;
 
     var selected;
 
     var minValue = 0.5;
 
-    var h = 1500, w = 1200;
+    var h = 500, w = 1000;
     
     var svg = d3.select("body")
     .append("svg")
     .attr("height", h)
     .attr("width", w);
 
-    var projection = d3.geo.azimuthalEqualArea()
-                        .rotate([70,-60, 25])
-                        .center([-20,-20])
-                        .scale(1000)
-                        .translate([w/2, h/2]);
+    // var projection = d3.geo.azimuthalEqualArea()
+    //                     .rotate([70,-60, 25])
+    //                     .center([-20,-20])
+    //                     .scale(1000)
+    //                     .translate([w/2, h/2]);
+
+    var projection = d3.geo.albersUsa().scale(1000).translate([w/2, h/2]);
 
     var path = d3.geo.path().projection(projection);
 
