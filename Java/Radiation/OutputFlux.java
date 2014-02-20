@@ -7,12 +7,18 @@ public class OutputFlux
 	public static void main(String args[]) throws IOException 
 	{
 		String divisionsFileName = Globals.projectDirectory + 
-				"usData/usDivisionsCommuters.csv";
+				"usData/usCanadaDivisions.csv";
 		
 		Division.loadDivisions(divisionsFileName);
 
 		ArrayList<String> keys = new ArrayList<String>();
-		keys.addAll(Division.divisions.keySet());
+		
+		for (String key : Division.divisions.keySet())
+		{
+			if (key.charAt(0) == 'C')
+				keys.add(key);
+		}
+		
 		Collections.sort(keys);
 		
 		int index = Integer.parseInt(args[0]);
@@ -20,7 +26,8 @@ public class OutputFlux
 		
 		for (int i = index; i < index + count; i++)
 		{
-			new Flux(keys.get(i));
+			if (i < keys.size())
+				new Flux(keys.get(i));
 		}
 	}
 }

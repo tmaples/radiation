@@ -13,7 +13,7 @@ class Flux implements Runnable
 	{
 		this.t = new Thread(this, uid);
 		this.uid = uid;
-		this.fileName = Globals.projectDirectory + "flux/flux" + uid + ".csv";
+		this.fileName = Globals.projectDirectory + "fluxCanadaToUsAndCanada/flux" + uid + ".csv";
 		t.start();
 	}
 

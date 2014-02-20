@@ -1,5 +1,12 @@
 import csv
 import math
+import globals
+
+path = globals.projectDirectory
+usDivisionFileName = path + 'usData/usDivisions.csv'
+canadaDivisionFileName = path + 'canadaData/canadaDivisions.csv'
+mexicoDivisionFileName = path + 'mexicoData/mexicoDivisions.csv'
+outputFileName = path + 'usData/distanceToCanada.csv'
 
 def processDivision(division):
 	return {	
@@ -22,30 +29,23 @@ def distance(x, y):
 	distance = earthRadius * c
 	return distance
 
-us = open('usDivisions.csv')
-canada = open('canadaDivisions.csv')
+us = open(usDivisionFileName)
+canada = open(canadaDivisionFileName)
 
 usDivisions = {division['uid']:processDivision(division) for division in csv.DictReader(us, delimiter=',', quotechar='"')}
 canadaDivisions = {division['uid']:processDivision(division) for division in csv.DictReader(canada, delimiter=',', quotechar='"')}
 
 output = ['uid,distance']
-maxDistance = 0
 
-for usDiv in usDivisions:
-	n = 0
-	d = 0
+uids = usDivisions.keys()
+uids.sort()
+
+for usDiv in uids:
 	minDistance = float('inf')
 	for canDiv in canadaDivisions:
 		dist = distance(usDivisions[usDiv], canadaDivisions[canDiv])
-		scaledDist = dist * (1 - (canadaDivisions[canDiv]['population'] / 30007094))
-		n += dist * canadaDivisions[canDiv]['population']
-		d += dist
-		if scaledDist < minDistance:
-			minDistance = scaledDist
-	if minDistance > maxDistance:
-		maxDistance = minDistance
-	weightedDistance = float(n) / d
+		if dist < minDistance:
+			minDistance = dist
 	output.append(usDiv + ',' + str(minDistance))
 
-open('minWeightedDistanceToCanada.csv', 'w').write('\n'.join(output))
-print maxDistance
+open(outputFileName,'w').write('\n'.join(output))
