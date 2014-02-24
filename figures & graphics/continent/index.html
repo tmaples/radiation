@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Color Map</title>
+    <script type="text/javascript" src="d3/d3.v3.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+
+    var mapFileName = "NorthAmerica.json";
+    var colorFileName = "colors.csv"
+    var mapData;
+    var colorData;
+
+    var h = 2000, w = 1500;
+    
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("height", h)
+    .attr("width", w);
+
+    var projection = d3.geo.azimuthalEquidistant()
+    .rotate([105, -45])
+    .center([-3, 5])
+    .scale(500)
+    .translate([w / 2, h / 2])
+    .precision(.1)
+    .clipAngle(70);
+
+    var path = d3.geo.path().projection(projection);
+
+    d3.json(mapFileName, function(data) 
+    {
+        mapData = data;
+        loadColorData();
+    });
+
+    function loadColorData()
+    {
+        d3.csv(colorFileName, function(data) 
+        {
+            colorData = data;
+            mergeData();
+            makeMap();
+        });
+    }
+
+    function mergeData()
+    {
+        for (var i = 0; i < mapData.features.length; i++)
+        {
+            var mapUid = mapData.features[i].properties.uid;
+            mapData.features[i].properties.color = "white";
+
+            if (mapData.features[i].properties.state == "Mexico")
+            {
+                mapData.features[i].properties.color = "red";
+            }
+
+            for (var j = 0; j < colorData.length; j++) 
+            {
+                var colorUid = colorData[j].uid;
+                if (colorUid == mapUid) 
+                {
+                    var color = colorData[j].color;
+                    mapData.features[i].properties.color = color;
+                    break;
+                }
+            }
+        }
+    }
+
+    function makeMap()
+    {
+        svg.selectAll("path")
+        .data(mapData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("fill", function(d) {
+                return d.properties.color; })
+        .attr("stroke", "black")
+        .attr("stroke-width", 0.5);
+    }
+    </script>
+</body>
+</html>

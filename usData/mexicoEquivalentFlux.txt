@@ -1,0 +1,7 @@
+> usError <- log10(file$usFluxData + 1) - log10(file$usFluxModel + 1)
+> mexError <- log10(file$otherFluxData + 1) - log10(file$otherFluxModel + 1)
+
+> mean(usError)
+[1] 0.09228156
+> mean(mexError)
+[1] -1.09902

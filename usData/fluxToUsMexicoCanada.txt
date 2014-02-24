@@ -1,0 +1,17 @@
+> allUsError <- log10(all$usFluxData + 1) - log10(all$usFluxModel + 1)
+> allMexError <- log10(all$mexicoFluxData + 1) - log10(all$mexicoFluxModel + 1)
+> allCanError <- log10(all$canadaFluxData + 1) - log10(all$canadaFluxModel + 1)
+
+> mean(allUsError)
+[1] 0.5849996
+> mean(allMexError)
+[1] -0.02240944
+> mean(allCanError)
+[1] -0.1377169
+
+> mean(allMexErrorNoZero)
+[1] -0.1431283
+> mean(allUsErrorNoZero)
+[1] 0.5849996
+> mean(allCanErrorNoZero)
+[1] -0.5166032
