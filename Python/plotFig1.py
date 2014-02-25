@@ -17,9 +17,8 @@ def getXY(fileName):
 
 a = getXY(inputFileName)
 plt.subplot('111')
-plt.xlabel('US Census Data')
-plt.ylabel('Radiation Model')
-plt.title('Radiation Model')
+plt.xlabel('Travelers (US Census Data)')
+plt.ylabel('Travelers (Radiation Model)')
 plt.yscale('log')
 plt.xscale('log')
 plt.xlim([1e-1,1e6])
