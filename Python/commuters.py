@@ -1,3 +1,8 @@
+US contiguous -> US contiguous
+US -> Canada + US
+US contiguous -> Mexico + US contiguous
+US -> US + Canada + Mexico
+
 import csv
 import globals
 
