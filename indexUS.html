@@ -55,12 +55,6 @@
     .attr("height", h)
     .attr("width", w);
 
-    // var projection = d3.geo.azimuthalEqualArea()
-    //                     .rotate([70,-60, 25])
-    //                     .center([-20,-20])
-    //                     .scale(1000)
-    //                     .translate([w/2, h/2]);
-
     var projection = d3.geo.albersUsa().scale(1000).translate([w/2, h/2]);
 
     var path = d3.geo.path().projection(projection);
@@ -125,8 +119,8 @@
 
     function clicked(d)
     {
-        var fileName = "dataUsContiguousToUsContiguous/flux" + d.properties.uid + ".csv";
-        if (fileName !== "flux/fluxnull.csv")
+        var fileName = "flux/" + d.properties.uid + ".csv";
+        if (fileExists(fileName))
         {
             selected = d;
             d3.selectAll("path")
@@ -171,6 +165,14 @@
         svg.selectAll(".unselected")
             .style("fill-opacity", function(d) {
                 return scale(d.properties.value); });
+    }
+
+    function fileExists(file)
+    {
+        var http = new XMLHttpRequest();
+        http.open('HEAD', file, false);
+        http.send();
+        return http.status!=404;
     }
     </script>
 </body>

@@ -9,7 +9,7 @@
     <script type="text/javascript">
 
     var mapFileName = "json/NorthAmerica.json";
-    var colorFileName = "usData/usCommuters.csv"
+    var colorFileName = "usData/errorToUsMexicoCanada.csv"
     var mapData;
     var colorData;
 
@@ -59,13 +59,13 @@
             // }
             for (var j = 0; j < colorData.length; j++) 
             {
-                var colorUid = colorData[j].uid;
+                var colorUid = (colorData[j].uid).substring(1);
 
                 if (colorUid == mapUid) 
                 {
-                    var color = "blue";
+                    var color = colorData[j].usColor;
                     mapData.features[i].properties.color = color;
-                    var opacity = parseFloat(colorData[j].ratio);
+                    var opacity = parseFloat(colorData[j].usOpacity);
                     mapData.features[i].properties.opacity = opacity;
                     break;
                 }

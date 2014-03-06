@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 defineModel(['us','alaska'],['us','alaska','canada','mexico'])
-calculateRadiusPopulations()
+calculateRadiusPopulations(False)
 loadCommuters()
 
 T = commuterMatrix()
@@ -13,8 +13,8 @@ qi = np.divide(Ti, Ttot)
 
 L = np.sum(np.multiply(Ti, np.log(qi)))
 
-def getLikelihood(parameters):
-	p = probabilityMatrix(parameters, True)
+def getLikelihood(parameter):
+	p = probabilityMatrix(parameter, True)
 	L += np.nansum(np.multiply(T, np.log(p)))
 	return L
 
