@@ -1,46 +1,22 @@
 import csv
 import math
 import globals
+import radiation as rad
 
-path = globals.projectDirectory
-usDivisionFileName = path + 'usData/usContiguousDivisionsCommutersToContiguous.csv'
-outputFileName = path + 'usData/distancesWithinUsContiguous.csv'
+outputFileName = globals.projectDirectory + 'usData/distancesWithinUsContiguous.csv'
 
-def processDivision(division):
-	return {	
-			'uid':division['uid'],
-			'population':float(division['population']),
-			'latitude':float(division['latitude']),
-			'longitude':float(division['longitude'])
-			}
+rad.defineModel(['us'],['us'])
 
-def distance(x, y):
-	earthRadius = 6371
-	deltaLat = math.radians(y['latitude'] - x['latitude'])
-	deltaLong = math.radians(y['longitude'] - x['longitude'])
-	sinDeltaLat = math.sin(deltaLat / 2)
-	sinDeltaLong = math.sin(deltaLong / 2)
-	a = math.pow(sinDeltaLat, 2) + math.pow(sinDeltaLong, 2) * \
-		math.cos(math.radians(x['latitude'])) * \
-		math.cos(math.radians(y['latitude']))
-	c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-	distance = earthRadius * c
-	return distance
+sources = rad.getRows()
+dests = rad.getColumns()
 
-us = open(usDivisionFileName)
+output = ['source,dest,distance']
 
-usDivisions = {division['uid']:processDivision(division) for division in csv.DictReader(us, delimiter=',', quotechar='"')}
-
-output = ['source+dest,distance']
-
-uids = usDivisions.keys()
-uids.sort()
-
-for source in uids:
-	for dest in uids:
+for source in sources:
+	for dest in dests:
 		if source == dest:
 			continue
-		dist = distance(usDivisions[source], usDivisions[dest])
-		output.append(source + dest + ',' + str(dist))
+		dist = rad.distance(source, dest)
+		output.append(','.join([source, dest, str(dist)]))
 
 open(outputFileName,'w').write('\n'.join(output))

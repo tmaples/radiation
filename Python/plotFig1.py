@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import csv
 
 path = globals.projectDirectory + 'usData/'
-inputFileName = path + 'dataVsModelUsContiguousToContiguousNoZeros.csv'
+inputFileName = path + 'dataVsModelUsContiguous.csv'
 
 def getXY(fileName):
 	inFile = open(fileName)

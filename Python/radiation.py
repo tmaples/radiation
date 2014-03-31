@@ -1,7 +1,7 @@
 import csv
 import math
 import globals
-import numpy
+import numpy as np
 import os
 
 ############ GLOBAL VARIABLES ############
@@ -14,11 +14,17 @@ fluxDirectoryName = path + 'flux/'
 divisions = {}
 sourceUids = []
 destUids = []
-canada, mexico = False, False
 
 commuters = {}
-radiusPopulations = {}
-otherCountryRadPop = {}
+
+mi = np.array([])
+nj = np.array([])
+aij = np.array([])
+bij = np.array([])
+
+uij = np.array([])
+cij = np.array([])
+mij = np.array([])
 
 ################ FUNCTIONS ###############
 
@@ -31,7 +37,7 @@ def loadDivisionsFromFile():
 
 def processDivision(division):
 	return {
-			'population':int(division['population']),
+			'population':float(division['population']),
 			'latitude':float(division['latitude']),
 			'longitude':float(division['longitude'])
 			}
@@ -42,47 +48,37 @@ def loadCommuters():
 	for move in csv.DictReader(movementFile):
 		sourceUid = 'U' + move['source']
 		destUid = move['dest']
-		if sourceUid not in sourceUids:
-			continue
-		if destUid == '301' and canada:
+		if destUid == '301':
 			destUid = 'C'
-		elif destUid == '303' and mexico:
+		elif destUid == '303':
 			destUid = 'M'
-		elif ('U' + destUid) in destUids:
-			destUid = 'U' + destUid
 		else:
-			continue
+			destUid = 'U' + destUid
 		n = int(move['n'])
 		if sourceUid not in commuters:
 			commuters[sourceUid] = {}
 		commuters[sourceUid][destUid] = n
 	movementFile.close()
 
-def getRows():
+def getRows(dataCompatible):
 	return sourceUids
 
-def getColumns():
-	return destUids
-
-def getRowsCompatible():
-	return getRows()
-
-def getColumnsCompatible():
-	columns = []
-	for destUid in destUids:
-		country = destUid[0]
-		if country == 'U':
-			columns.append(destUid)
-	if canada:
-		columns.append('C')
-	if mexico:
-		columns.append('M')
-	return columns
+def getColumns(dataCompatible):
+	if dataCompatible:
+		columns = []
+		for destUid in destUids:
+			country = destUid[0]
+			if country == 'U':
+				columns.append(destUid)
+		if 'C' in [uid[0] for uid in destUids]:
+			columns.append('C')
+		if 'M' in [uid[0] for uid in destUids]:
+			columns.append('M')
+		return columns
+	else:
+		return destUids
 
 def defineModel(sourceFileNames, destFileNames):
-	global canada, mexico
-	canada = 'canada' in destFileNames
-	mexico = 'mexico' in destFileNames
 	global sourceUids, destUids
 	for sourceFileName in sourceFileNames:
 		sourceFileName = path + 'regions/' + sourceFileName
@@ -92,61 +88,139 @@ def defineModel(sourceFileNames, destFileNames):
 		destUids += [line.strip() for line in open(destFileName)]
 	sourceUids.sort()
 	destUids.sort()
-
-def calculateRadiusPopulations(includeOtherCountry):
-	global radiusPopulations, otherCountryRadPop
+	
+	global mi, nj
+	miList, njList = [], []
 	for sourceUid in sourceUids:
-		radiusPopulations[sourceUid] = {}
-		if includeOtherCountry:
-			otherCountryRadPop[sourceUid] = {}
-		distances = []
+		miList.append(divisions[sourceUid]['population'])
+	for destUid in destUids:
+		njList.append(divisions[destUid]['population'])
+	mi = np.array(miList)[np.newaxis].T
+	nj = np.array(njList)
+
+def calculateRadiusPopulations():
+	global aij, bij
+	aijMatrix = []
+	bijMatrix = []
+	
+	for sourceUid in sourceUids:
+		aijRow = []
+		bijRow = []
+
+		dests = []
 		for destUid in destUids:
 			if sourceUid == destUid:
 				continue
-			distances.append([destUid, distance(sourceUid, destUid)])
-		distances.sort(key=lambda x: x[1])
-		previousRadPop = 0
-		previousPop = 0
-		if includeOtherCountry:
-			previousOtherRadPop = 0
-			previousOtherPop = 0
-		for destUid, _ in distances:
-			currentRadPop = previousRadPop + previousPop
-			radiusPopulations[sourceUid][destUid] = currentRadPop
-			previousRadPop = currentRadPop
-			previousPop = divisions[destUid]['population']
-			if includeOtherCountry:
-				currentOtherRadPop = previousOtherRadPop + previousOtherPop
-				otherCountryRadPop[sourceUid][destUid] = currentOtherRadPop
-				previousOtherRadPop = currentOtherRadPop
-				country = destUid[0]
-				if country == 'C' or country == 'M':
-					previousOtherPop = divisions[destUid]['population']
-				else:
-					previousOtherPop = 0
-	return radiusPopulations, otherCountryRadPop
+			dest = {}
+			dest['uid'] = destUid
+			dest['distance'] = distance(sourceUid, destUid)
+			dest['population'] = divisions[destUid]['population']
+			dest['a'] = 0.0
+			dest['b'] = 0.0
+			dests.append(dest)
+		
+		dests.sort(key=lambda x: x['distance'])
 
-def calculateRadiusPopulations2(scale):
-	global radiusPopulations
+		for i in range(1, len(dests)):
+			previous = dests[i - 1]
+			current = dests[i]
+
+			previousCountry = previous['uid'][0]
+			
+			if previousCountry == 'U':
+				current['a'] = previous['a'] + previous['population']
+				current['b'] = previous['b']
+			else:
+				current['a'] = previous['a']
+				current['b'] = previous['b'] + previous['population']
+
+		if sourceUid in destUids:
+			dest = {}
+			dest['uid'] = sourceUid
+			dest['a'] = np.nan
+			dest['b'] = np.nan
+			dests.append(dest)
+
+		dests.sort(key=lambda x: x['uid'])
+
+		for dest in dests:
+			aijRow.append(dest['a'])
+			bijRow.append(dest['b'])
+
+		aijMatrix.append(aijRow)
+		bijMatrix.append(bijRow)
+
+	aij = np.array(aijMatrix)
+	bij = np.array(bijMatrix)
+
+def calculateRadiusPopulations2():
+	global uij, cij, mij
+	uijMatrix = []
+	cijMatrix = []
+	mijMatrix = []
+	
 	for sourceUid in sourceUids:
-		radiusPopulations[sourceUid] = {}
-		distances = []
+		uijRow = []
+		cijRow = []
+		mijRow = []
+
+		dests = []
 		for destUid in destUids:
 			if sourceUid == destUid:
 				continue
-			distances.append([destUid, distance(sourceUid, destUid)])
-		distances.sort(key=lambda x: x[1])
-		previousRadPop = 0
-		previousPop = 0
-		for destUid, _ in distances:
-			currentRadPop = previousRadPop + previousPop
-			radiusPopulations[sourceUid][destUid] = currentRadPop
-			previousRadPop = currentRadPop
-			previousPop = divisions[destUid]['population']
-			country = destUid[0]
-			if country != 'U':
-				previousPop *= scale
-	return radiusPopulations
+			dest = {}
+			dest['uid'] = destUid
+			dest['distance'] = distance(sourceUid, destUid)
+			dest['population'] = divisions[destUid]['population']
+			dest['u'] = 0.0
+			dest['c'] = 0.0
+			dest['m'] = 0.0
+
+			dests.append(dest)
+		
+		dests.sort(key=lambda x: x['distance'])
+
+		for i in range(1, len(dests)):
+			previous = dests[i - 1]
+			current = dests[i]
+
+			previousCountry = previous['uid'][0]
+			
+			if previousCountry == 'U':
+				current['u'] = previous['u'] + previous['population']
+				current['c'] = previous['c']
+				current['m'] = previous['m']
+			elif previousCountry == 'C':
+				current['c'] = previous['c'] + previous['population']
+				current['u'] = previous['u']
+				current['m'] = previous['m']
+			else:
+				current['m'] = previous['m'] + previous['population']
+				current['c'] = previous['c']
+				current['u'] = previous['u']
+
+		if sourceUid in destUids:
+			dest = {}
+			dest['uid'] = sourceUid
+			dest['u'] = np.nan
+			dest['c'] = np.nan
+			dest['m'] = np.nan
+			dests.append(dest)
+
+		dests.sort(key=lambda x: x['uid'])
+
+		for dest in dests:
+			uijRow.append(dest['u'])
+			cijRow.append(dest['c'])
+			mijRow.append(dest['m'])
+
+		uijMatrix.append(uijRow)
+		cijMatrix.append(cijRow)
+		mijMatrix.append(mijRow)
+
+	uij = np.array(uijMatrix)
+	cij = np.array(cijMatrix)
+	mij = np.array(mijMatrix)
 
 def commuterMatrix():
 	matrix = []
@@ -159,93 +233,93 @@ def commuterMatrix():
 					row.append(0)
 				else:
 					row.append(getCommuters(sourceUid, destUid))
-		if canada:
+		if 'C' in [uid[0] for uid in destUids]:
 			row.append(getCommuters(sourceUid, 'C'))
-		if mexico:
+		if 'M' in [uid[0] for uid in destUids]:
 			row.append(getCommuters(sourceUid, 'M'))
 		matrix.append(row)
-	return numpy.array(matrix)
+	return np.array(matrix)
 
 def getCommuters(sourceUid, destUid):
 	if sourceUid in commuters and destUid in commuters[sourceUid]:
 		return commuters[sourceUid][destUid]
 	return 0
 
-def probabilityMatrix(parameter, dataCompatible):
-	matrix = []
-	for sourceUid in sourceUids:
-		mi = divisions[sourceUid]['population']
-		row = []
-		canadaProb, mexicoProb = 0, 0
-		for destUid in destUids:
-			prob = numpy.nan
-			if sourceUid != destUid:
-				country = destUid[0]
-				nj = divisions[destUid]['population']
-				sij = radiusPopulations[sourceUid][destUid]
-				# if parameter is None or country == 'U':
-				prob = float(mi*nj) / ((mi+sij)*(mi+nj+sij))
-				# else:
-				# 	bij = otherCountryRadPop[sourceUid][destUid]
-				# 	prob = (mi*pow(parameter, bij))*((1.0/(mi+sij))-(pow(parameter,nj)*(1.0/(mi+nj+sij))))
-			if dataCompatible:
-				country = destUid[0]
-				if country == 'U':
-					row.append(prob)
-				elif country == 'C':
-					canadaProb += prob
-				elif country == 'M':
-					mexicoProb += prob
-			else:
-				row.append(prob)
-		if dataCompatible:
-			if canada:
-				row.append(canadaProb)
-			if mexico:
-				row.append(mexicoProb)
-		# Normalize probabilities
-		rowSum = numpy.nansum(row)
-		for i in range(len(row)):
-			row[i] = float(row[i]) / rowSum
-		matrix.append(row)
-	return numpy.array(matrix)
+def probabilityMatrix(dataCompatible, parameter):
 
-def probabilityMatrix2(scale, dataCompatible):
-	matrix = []
-	for sourceUid in sourceUids:
-		mi = divisions[sourceUid]['population']
-		row = []
-		canadaProb, mexicoProb = 0, 0
-		for destUid in destUids:
-			prob = numpy.nan
-			if sourceUid != destUid:
-				country = destUid[0]
-				nj = divisions[destUid]['population']
-				if country != 'U':
-					nj *= scale
-				sij = radiusPopulations[sourceUid][destUid]
-				prob = float(mi*nj) / ((mi+sij)*(mi+nj+sij))
-			if dataCompatible:
-				country = destUid[0]
-				if country == 'U':
-					row.append(prob)
-				elif country == 'C':
-					canadaProb += prob
-				elif country == 'M':
-					mexicoProb += prob
-			else:
-				row.append(prob)
-		if dataCompatible:
-			if canada:
-				row.append(canadaProb)
-			if mexico:
-				row.append(mexicoProb)
-		# Normalize probabilities
-		rowSum = numpy.nansum(row)
-		for i in range(len(row)):
-			row[i] = float(row[i]) / rowSum
-		matrix.append(row)
-	return numpy.array(matrix)
+	# RADIATION MODEL
+	sij = aij + bij
+	probs = mi*nj / ((mi+sij)*(mi+nj+sij))
+	
+	# HAZARD FORMULATION
+	# prob = (mi*pow(parameter, bij))*((1.0/(mi+sij))-(pow(parameter,nj)*(1.0/(mi+nj+sij))))
+	
+	# P_Z AND Q_Z POWER RELATIONSHIP FORMULATION
+	# gamma = parameter
+	# probs = mi*(1.0/(mi + aij + gamma*bij) - 1.0/(mi + aij + gamma*bij + gamma*nj))
+
+	if dataCompatible:
+		countries = [i[0] for i in destUids]
+		canadaIndex = countries.index('C') if 'C' in countries else -1
+		mexicoIndex = countries.index('M') if 'M' in countries else -1
+		usIndex = countries.index('U') if 'U' in countries else -1
+
+		usProb = probs[:,usIndex:]
+
+		if canadaIndex > -1 and mexicoIndex > -1:
+			canadaProb = np.nansum(probs[:,:mexicoIndex], axis=1)[np.newaxis].T
+			mexicoProb = np.nansum(probs[:,mexicoIndex:usIndex], axis=1)[np.newaxis].T
+			probs = np.concatenate((usProb,canadaProb,mexicoProb), axis=1)
+		elif canadaIndex > -1:
+			canadaProb = np.nansum(probs[:,canadaIndex:usIndex], axis=1)[np.newaxis].T
+			probs = np.concatenate((usProb,canadaProb), axis=1)
+		elif mexicoIndex > -1:
+			mexicoProb = np.nansum(probs[:,mexicoIndex:usIndex], axis=1)[np.newaxis].T
+			probs = np.concatenate((usProb,mexicoProb), axis=1)
+
+	# Normalize probabilities
+	rowSums  = np.nansum(probs, axis=1)[np.newaxis].T
+	probs = probs / rowSums
+
+	return probs
+
+def probabilityMatrix2(dataCompatible, parameters):
+
+	# RADIATION MODEL
+	# sij = aij + bij
+	# probs = mi*nj / ((mi+sij)*(mi+nj+sij))
+	
+	# HAZARD FORMULATION
+	# prob = (mi*pow(parameter, bij))*((1.0/(mi+sij))-(pow(parameter,nj)*(1.0/(mi+nj+sij))))
+	
+	# P_Z AND Q_Z POWER RELATIONSHIP FORMULATION
+	gammaC, gammaM = parameters
+	probs = mi*(1.0/(mi + uij + gammaC*cij + gammaM*mij) - 1.0/(mi + uij + gammaC*cij + gammaM*mij + ((gammaC+gammaM)/2)*nj))
+
+	if dataCompatible:
+		countries = [i[0] for i in destUids]
+		canadaIndex = countries.index('C') if 'C' in countries else -1
+		mexicoIndex = countries.index('M') if 'M' in countries else -1
+		usIndex = countries.index('U') if 'U' in countries else -1
+
+		usProb = probs[:,usIndex:]
+
+		if canadaIndex > -1 and mexicoIndex > -1:
+			canadaProb = np.nansum(probs[:,:mexicoIndex], axis=1)[np.newaxis].T
+			mexicoProb = np.nansum(probs[:,mexicoIndex:usIndex], axis=1)[np.newaxis].T
+			probs = np.concatenate((usProb,canadaProb,mexicoProb), axis=1)
+		elif canadaIndex > -1:
+			canadaProb = np.nansum(probs[:,canadaIndex:usIndex], axis=1)[np.newaxis].T
+			probs = np.concatenate((usProb,canadaProb), axis=1)
+		elif mexicoIndex > -1:
+			mexicoProb = np.nansum(probs[:,mexicoIndex:usIndex], axis=1)[np.newaxis].T
+			probs = np.concatenate((usProb,mexicoProb), axis=1)
+
+	# Normalize probabilities
+	rowSums  = np.nansum(probs, axis=1)[np.newaxis].T
+	probs = probs / rowSums
+
+	return probs
 
 def distance(sourceUid, destUid):
 	source = divisions[sourceUid]
@@ -262,17 +336,29 @@ def distance(sourceUid, destUid):
 	distance = earthRadius * c
 	return distance
 
-def fluxMatrix(scale, dataCompatible):
-	Ti = numpy.sum(commuterMatrix(), axis=1)[numpy.newaxis].T
-	p = probabilityMatrix2(scale, dataCompatible)
-	return numpy.round(numpy.multiply(Ti, p))
+def distanceMatrix():
+	matrix = []
+	for sourceUid in sourceUids:
+		row = []
+		for destUid in destUids:
+			row.append(distance(sourceUid, destUid))
+		matrix.append(row)
+	return np.array(matrix)
 
-def outputFlux(scale):
+def fluxMatrix(dataCompatible, parameter, round):
+	Ti = np.sum(commuterMatrix(), axis=1)[np.newaxis].T
+	p = probabilityMatrix(dataCompatible, parameter)
+	if round:
+		return np.round(np.multiply(Ti, p))
+	else:
+		return np.multiply(Ti, p)
+
+def outputFlux(parameter):
 	if not os.path.exists(fluxDirectoryName):
 		os.makedirs(fluxDirectoryName)
 	rows = getRowsCompatible()
 	columns = getColumnsCompatible()
-	flux = fluxMatrix(scale=scale, dataCompatible=True)
+	flux = fluxMatrix(dataCompatible=False, parameter=parameter, round=True)
 	for i in range(len(rows)):
 		sourceUid = rows[i][1:]
 		output = ['uid,movement']
@@ -281,11 +367,12 @@ def outputFlux(scale):
 			if country != 'U':
 				continue
 			n = flux[i][j]
-			if not numpy.isnan(n) and n != 0:
+			if not np.isnan(n) and n != 0:
 				destUid = columns[j][1:]
 				output.append(','.join([destUid, str(int(n))]))
 		outputFileName = fluxDirectoryName + sourceUid + '.csv'
 		open(outputFileName, 'w').write('\n'.join(output))
+
 ################ MAIN ###############
 
 loadDivisionsFromFile()

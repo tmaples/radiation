@@ -41,7 +41,7 @@
 
     <script type="text/javascript">
 
-    var mapFileName = "json/us.json";
+    var mapFileName = "json/usNoAlaska.json";
     var mapData;
 
     var selected;
@@ -110,7 +110,6 @@
                 if (movementUid == mapUid) 
                 {
                     mapData.features[i].properties.value = movementValue;
-                    movementValue = j;
                     break;
                 }
             }
