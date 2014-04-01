@@ -2,7 +2,7 @@ from radiation import *
 import numpy as np
 import time
 
-defineModel(['us','alaska'],['us','mexico','canada','alaska'])
+defineModel(['us'],['us','mexico'])
 calculateRadiusPopulations()
 loadCommuters()
 
@@ -13,9 +13,11 @@ qi = np.divide(Ti, Ttot)
 
 Lfirst = np.sum(np.multiply(Ti, np.log(qi)))
 
-def getLikelihood(parameter):
+def getLikelihood(parameters):
 	t = time.time()
-	p = probabilityMatrix(dataCompatible=True, parameter=parameter)
+	p = probabilityMatrix(dataCompatible=True, parameters=parameters)
 	Lsecond = Lfirst + np.nansum(np.multiply(T, np.log(p)))
-	print 'PARAMETER:',parameter,'LIKELIHOOD:',-Lsecond,'TIME:', time.time() - t
+	print 'PARAMETER:',parameters,'LIKELIHOOD:',-Lsecond,'TIME:', time.time() - t
 	return -Lsecond
+
+print getLikelihood([0.9])
