@@ -3,7 +3,9 @@ import math
 import globals
 import numpy as np
 import os
-
+import time
+import cPickle
+ 
 ############ GLOBAL VARIABLES ############
 
 path = globals.projectDirectory
@@ -57,6 +59,8 @@ def loadCommuters():
 		commuters[sourceUid][destUid] = n
 	movementFile.close()
 
+	print 'Commuters loaded.'
+
 def getRows(dataCompatible):
 	return sourceUids
 
@@ -93,6 +97,8 @@ def defineModel(sourceFileNames, destFileNames):
 	global masks
 	for mask in masks:
 		masks[mask] = np.array([uid[0] == mask for uid in destUids])
+
+	print 'Model defined.'
 
 def calculateRadiusPopulations():
 	global sij
@@ -142,6 +148,8 @@ def calculateRadiusPopulations():
 	for country in sij:
 		sij[country] = np.array(sij[country])
 
+	print 'Radius populations calculated.'
+
 def commuterMatrix():
 	matrix = []
 	for sourceUid in sourceUids:
@@ -165,23 +173,27 @@ def getCommuters(sourceUid, destUid):
 		return commuters[sourceUid][destUid]
 	return 0
 
-def probabilityMatrix(dataCompatible, parameters):
-
+def probabilityMatrix(dataCompatible, parameters, formulation=None):
+	probs = []
+	
 	# RADIATION MODEL
-	# sij = sij['U'] + sij['M'] + sij['C']
-	# probs = mi*nj / ((mi+sij)*(mi+nj+sij))
-	
+	if formulation is None or formulation == 'Standard':
+		s = sij['U'] + sij['M'] + sij['C']
+		probs = mi*nj / ((mi+s)*(mi+nj+s))
 	# HAZARD FORMULATION
-	# bij = sij['M'] + sij['C']
-	# sij = bij + sij['U']
-	# gamma = parameters[0]
-	# prob = (mi*pow(gamma, bij))*((1.0/(mi+sij))-(pow(gamma,nj)*(1.0/(mi+nj+sij))))
-	
+	elif formulation == 'Hazard':
+		bij = sij['M'] + sij['C']
+		s = bij + sij['U']
+		gamma = parameters[0]
+		prob = (mi*pow(gamma, bij))*((1.0/(mi+s))-(pow(gamma,nj)*(1.0/(mi+nj+s))))
 	# P_Z AND Q_Z POWER RELATIONSHIP FORMULATION
-	gammaC, gammaM = parameters[0], parameters[0]
-	gamma = (gammaC * masks['C']) + (gammaM * masks['M']) + masks['U']
-	probs = mi * (1.0/(mi + sij['U'] + (gammaC * sij['C']) + (gammaM * sij['M'])) - \
-		1.0/(mi + sij['U'] + (gammaC * sij['C']) + (gammaM * sij['M']) + gamma*nj))
+	elif formulation == 'Power':
+		gammaC, gammaM = parameters[0], parameters[1]
+		gamma = (gammaC * masks['C']) + (gammaM * masks['M']) + masks['U']
+		probs = mi * (1.0/(mi + sij['U'] + (gammaC * sij['C']) + (gammaM * sij['M'])) - \
+			1.0/(mi + sij['U'] + (gammaC * sij['C']) + (gammaM * sij['M']) + gamma*nj))
+	else:
+		print 'Invalid formulation.'
 
 	if dataCompatible:
 		usProb = probs[:, masks['U']]
@@ -224,20 +236,20 @@ def distanceMatrix():
 		matrix.append(row)
 	return np.array(matrix)
 
-def fluxMatrix(dataCompatible, parameters, round):
+def fluxMatrix(dataCompatible, parameters, round, formulation=None):
 	Ti = np.sum(commuterMatrix(), axis=1)[np.newaxis].T
-	p = probabilityMatrix(dataCompatible, parameters)
+	p = probabilityMatrix(dataCompatible, parameters, formulation)
 	if round:
 		return np.round(np.multiply(Ti, p))
 	else:
 		return np.multiply(Ti, p)
 
-def outputFlux(parameters):
+def outputFlux(parameters, formulation=None):
 	if not os.path.exists(fluxDirectoryName):
 		os.makedirs(fluxDirectoryName)
-	rows = getRowsCompatible()
-	columns = getColumnsCompatible()
-	flux = fluxMatrix(dataCompatible=False, parameters=parameters, round=True)
+	rows = getRows(dataCompatible=True)
+	columns = getColumns(dataCompatible=True)
+	flux = fluxMatrix(dataCompatible=False, parameters=parameters, round=True, forumulation=formulation)
 	for i in range(len(rows)):
 		sourceUid = rows[i][1:]
 		output = ['uid,movement']
@@ -253,5 +265,10 @@ def outputFlux(parameters):
 		open(outputFileName, 'w').write('\n'.join(output))
 
 ################ MAIN ###############
-
 loadDivisionsFromFile()
+defineModel(['us'],['us'])
+# calculateRadiusPopulations()
+# P = probabilityMatrix(False, None, formulation='Standard')
+loadCommuters()
+C = commuterMatrix()
+cPickle.dump(C.tolist(), open('data-old', 'w'))

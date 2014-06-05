@@ -9,9 +9,9 @@
     <script type="text/javascript">
 
     var mapFileName = "json/NorthAmerica.json";
-    var colorFileName = "usData/errorToUsMexicoCanada.csv"
     var mapData;
-    var colorData;
+    var divisionFileName = "continentDivisions.csv"
+    var divisionData;
 
     var h = 2000, w = 2500;
     
@@ -33,14 +33,14 @@
     d3.json(mapFileName, function(data) 
     {
         mapData = data;
-        loadColorData();
+        loadDivisionData();
     });
 
-    function loadColorData()
+    function loadDivisionData()
     {
-        d3.csv(colorFileName, function(data) 
+        d3.csv(divisionFileName, function(data) 
         {
-            colorData = data;
+            divisionData = data;
             mergeData();
             makeMap();
         });
@@ -51,22 +51,14 @@
         for (var i = 0; i < mapData.features.length; i++)
         {
             var mapUid = mapData.features[i].properties.uid;
-            mapData.features[i].properties.color = "white";
-
-            // if (mapData.features[i].properties.state == "Canada")
-            // {
-            //     mapData.features[i].properties.color = "red";
-            // }
-            for (var j = 0; j < colorData.length; j++) 
+            for (var j = 0; j < divisionData.length; j++) 
             {
-                var colorUid = (colorData[j].uid).substring(1);
+                var divisionUid = (divisionData[j].uid).substring(1);
 
-                if (colorUid == mapUid) 
+                if (divisionUid == mapUid) 
                 {
-                    var color = colorData[j].usColor;
-                    mapData.features[i].properties.color = color;
-                    var opacity = parseFloat(colorData[j].usOpacity);
-                    mapData.features[i].properties.opacity = opacity;
+                    var value = parseFloat(divisionData[j].population);
+                    mapData.features[i].properties.value = value;
                     break;
                 }
             }
@@ -80,13 +72,33 @@
         .enter()
         .append("path")
         .attr("d", path)
-        .attr("fill", function(d) {
-                return d.properties.color; })
-        .attr("fill-opacity", function(d) {
-                return d.properties.opacity; })
+        .attr("fill", "white")
         .attr("stroke", "black")
         .attr("stroke-opacity", 1)
-        .attr("stroke-width", 0.5);
+        .attr("stroke-width", 0.25);
+
+        // map sqrt-rooted population ( 0 ~ 5000 ) into circle radius ( 0 ~ 70px )
+        radiusMap = d3.scale.linear()
+        .domain([1,3200])
+        .range([0,10]);
+
+        // create circles
+        dorling = d3.select("svg").selectAll("circle").data(mapData.features).enter()
+        .append("circle")
+        .each(function(it) {
+        // use sqrt root to correct map value into area
+        it.properties.r = radiusMap(Math.sqrt(it.properties.value));
+        it.properties.c = path.centroid(it);
+        // it.properties.x = 400;
+        // it.properties.y = 300;
+        })
+        .attr("cx",function(it) { return it.properties.c[0]; })
+        .attr("cy",function(it) { return it.properties.c[1]; })
+        .attr("r", function(it) { return it.properties.r;})
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .attr("stroke-opacity", 1)
+        .attr("stroke-width", 0.25);
     }
     </script>
 </body>
