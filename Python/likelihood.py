@@ -4,7 +4,7 @@ import time
 
 defineModel(['us','alaska'],['us','alaska','canada','mexico'])
 calculateRadiusPopulations()
-loadCommuters() 
+loadCommuters()
 
 T = commuterMatrix()
 Ttot = float(np.sum(T))

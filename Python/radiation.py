@@ -58,7 +58,6 @@ def loadCommuters():
 			commuters[sourceUid] = {}
 		commuters[sourceUid][destUid] = n
 	movementFile.close()
-
 	print 'Commuters loaded.'
 
 def getRows(dataCompatible):
@@ -89,15 +88,12 @@ def defineModel(sourceFileNames, destFileNames):
 		destUids += [line.strip() for line in open(destFileName)]
 	sourceUids.sort()
 	destUids.sort()
-	
 	global mi, nj
 	mi = np.array([divisions[uid]['population'] for uid in sourceUids])[np.newaxis].T
 	nj = np.array([divisions[uid]['population'] for uid in destUids])
-	
 	global masks
 	for mask in masks:
 		masks[mask] = np.array([uid[0] == mask for uid in destUids])
-
 	print 'Model defined.'
 
 def calculateRadiusPopulations():
@@ -266,9 +262,3 @@ def outputFlux(parameters, formulation=None):
 
 ################ MAIN ###############
 loadDivisionsFromFile()
-defineModel(['us'],['us'])
-# calculateRadiusPopulations()
-# P = probabilityMatrix(False, None, formulation='Standard')
-loadCommuters()
-C = commuterMatrix()
-cPickle.dump(C.tolist(), open('data-old', 'w'))

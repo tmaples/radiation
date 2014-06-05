@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Error Map</title>
+    <script type="text/javascript" src="d3/d3.v3.min.js"></script>
+    <style type="text/css">
+    
+    #counties {
+        stroke: Black;
+        stroke-width: 0.2;
+    }
+    
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+
+    var mapFileName = "json/usNoAlaska.json";
+    var mapData;
+    var movementFileName = "usData/errorNew.csv"
+
+    var minValue = 0.0003;
+    var maxValue = 9;
+
+    var h = 500, w = 1000;
+    
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("height", h)
+    .attr("width", w);
+
+    var projection = d3.geo.albersUsa().scale(1000).translate([w/2, h/2]);
+
+    var path = d3.geo.path().projection(projection);
+
+    var scale = d3.scale.linear().domain([minValue, maxValue]).range([0, 1]);
+
+    d3.json(mapFileName, function(data) 
+    {
+        mapData = data;
+        makeMap();
+        loadMovementData();
+    });
+ 
+    function loadMovementData()
+    {
+        d3.csv(movementFileName, function(data) 
+        {
+            mergeData(data);
+            updateMap();
+        });
+    }
+
+    function mergeData(movementData)
+    {
+        for (var i = 0; i < mapData.features.length; i++)
+        {
+            var mapUid = mapData.features[i].properties.uid;
+            mapData.features[i].properties.color = 'white';
+            mapData.features[i].properties.opacity = 0;
+            
+            for (var j = 0; j < movementData.length; j++) 
+            {
+                var movementUid = movementData[j].uid;
+                var error = parseFloat(movementData[j].mexError);
+                
+                if (movementUid == mapUid)
+                {
+                    mapData.features[i].properties.color = 'darkgreen';
+                    if (error < 0)
+                        mapData.features[i].properties.color = 'darkorange';
+                    
+                    mapData.features[i].properties.opacity = scale(Math.abs(error));
+                    
+                    break;
+                }
+            }
+        }
+    }
+
+    function makeMap()
+    {
+        svg.selectAll("path")
+        .data(mapData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("id", "counties");
+    }
+
+    function updateMap()
+    {
+        svg.selectAll("path")
+            .style("fill", function(d) {
+                return d.properties.color; })
+            .style("fill-opacity", function(d) {
+                return d.properties.opacity; });
+    }
+    </script>
+</body>
+</html>

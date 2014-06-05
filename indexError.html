@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Error Map</title>
+    <script type="text/javascript" src="d3/d3.v3.min.js"></script>
+    <style type="text/css">
+    
+    #counties {
+        stroke: Black;
+        stroke-width: 0.2;
+        -moz-transition: all 1.5s;
+        -o-transition: all 1.5s;
+        -webkit-transition: all 1.5s;
+        transition: all 1.5s;
+    }
+    
+    #county-name {
+        position: absolute;
+        text-align: center;
+        font-family: sans-serif;
+        font-size: 14px;
+    }
+    
+    #county-name.hidden {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <p id="county-name"><strong></strong></p>
+
+    <script type="text/javascript">
+
+    var mapFileName = "json/usNoAlaska.json";
+    var mapData;
+
+    var selected;
+
+    var minValue = 0.0003;
+    var maxValue = 9;
+
+    var h = 500, w = 1000;
+    
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("height", h)
+    .attr("width", w);
+
+    var projection = d3.geo.albersUsa().scale(1000).translate([w/2, h/2]);
+
+    var path = d3.geo.path().projection(projection);
+
+    var scale = d3.scale.linear().domain([minValue, maxValue]).range([0, 1]);
+
+    d3.json(mapFileName, function(data) 
+    {
+        mapData = data;
+        makeMap();
+    });
+ 
+    d3.select("#county-name").style("width",w+"px");
+
+    function loadMovementData(movementFileName)
+    {
+        d3.csv(movementFileName, function(data) 
+        {
+            mergeData(data);
+            updateMap();
+        });
+    }
+
+    function mergeData(movementData)
+    {
+        for (var i = 0; i < mapData.features.length; i++)
+        {
+            var mapUid = mapData.features[i].properties.uid;
+            mapData.features[i].properties.color = 'white';
+            mapData.features[i].properties.opacity = 0;
+            
+            for (var j = 0; j < movementData.length; j++) 
+            {
+                var movementUid = movementData[j].uid;
+                var error = parseFloat(movementData[j].error);
+                
+                if (movementUid == mapUid)
+                {
+                    mapData.features[i].properties.color = 'darkgreen';
+                    if (error < 0)
+                        mapData.features[i].properties.color = 'darkorange';
+                    
+                    mapData.features[i].properties.opacity = scale(Math.abs(error));
+                    
+                    break;
+                }
+            }
+        }
+    }
+
+    function clicked(d)
+    {
+        var fileName = "error/" + d.properties.uid + ".csv";
+        if (fileExists(fileName))
+        {
+            selected = d;
+            
+            d3.selectAll("path")
+                .classed("selected", function(d) { return d == selected })
+                .classed("unselected", function(d) { return d != selected });
+        
+            loadMovementData(fileName);
+        }
+    }
+
+    function hover(d)
+    {
+        d3.select("#county-name")
+            .text(d.properties.name + ' County, ' + d.properties.region)
+            .classed("hidden", false);
+    }
+
+    function unhover(d)
+    {
+        d3.select("#county-name")
+            .classed("hidden", true);
+    }
+
+    function makeMap()
+    {
+        svg.selectAll("path")
+        .data(mapData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("id", "counties")
+        .classed("unselected", true)
+        .on("mouseover", hover)
+        .on("mouseout", unhover)
+        .on("click", clicked)
+        .style("fill", "white");
+    }
+
+    function updateMap()
+    {
+        svg.selectAll(".selected")
+            .style("fill", "#CDAD00")
+            .style("fill-opacity", 1);
+
+        svg.selectAll(".unselected")
+            .style("fill", function(d) {
+                return d.properties.color; })
+            .style("fill-opacity", function(d) {
+                return d.properties.opacity; });
+    }
+
+    function fileExists(file)
+    {
+        var http = new XMLHttpRequest();
+        http.open('HEAD', file, false);
+        http.send();
+        return http.status!=404;
+    }
+    </script>
+</body>
+</html>

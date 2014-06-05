@@ -1,6 +1,0 @@
-> canError <- log10(fileUsCan$canadaFluxData + 1) - log10(fileUsCan$canadaFluxModel + 1)
-> usCanError <- log10(fileUsCan$usFluxData + 1) - log10(fileUsCan$usFluxModel + 1)
-> mean(canError)
-[1] -1.279795
-> mean(usError)
-[1] 0.09228156
